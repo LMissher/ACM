@@ -1,8 +1,12 @@
 # codeforces 1051F
+http://codeforces.com/contest/1051/problem/F
+
 给一副图，图中的边最多比点多20条。给q次询问，每次询问两点的最短路。
 随便弄一个生成树，然后求出两点在树上的距离。
 把非树边的两端点保存然后求分别求一次最短路。
 然后以所有非树边端点的最短距离更新即可。
 
 # wannafly_day1_J
+http://newoj.acmclub.cn/contests/1389/problem/9
+
 和上一题同理。
