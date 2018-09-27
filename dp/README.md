@@ -25,7 +25,7 @@ dp[i][j] = max(dp[i-1][j], max( dp[r][k] - API[i] * ( j - k ) | (j>k) , dp[r][k]
 枚举k与j，可以同时枚举，因为如果k>j则买入必不可能，卖出同理  
 单调队列维护之前的最大值即可  
 
-# NOI2010fenghuochuandi
+# NOI2010 fenghuochuandi
 http://www.joyoi.cn/problem/tyvj-1313
 
 给n个数，要求每m个数必须点燃一把火，每个点点燃的代价不同  
@@ -34,3 +34,18 @@ http://www.joyoi.cn/problem/tyvj-1313
 但这样做复杂度是 n^2 的，不可接受  
 考虑用单调队列优化即可  
 注意前 m 个是必须要点燃一个，后 m 个同理  
+
+# hdu3507 Print Article
+http://acm.hdu.edu.cn/showproblem.php?pid=3507
+
+斜率优化dp  
+这道题问给n个数，要你用最小的代价把n个数分成一些区间，代价是区间数和的平方加M的和  
+得到递推式 dp[i] = min( dp[j] + (sum[i] - sum[j])^2 + M )  
+假设选择的点j优于k，那么 dp[j] + (sum[i] - sum[j])^2 + M < dp[k] + (sum[i] - sum[k])^2 + M  
+化简得到 (dp[j] + sum[j]^2 -dp[k] -sum[k]^2 ) / 2 * ( sum[j] - sum[k] ) < sum[i]  
+令 F[x] = dp[x] + sum[x]^2，则上式为 (F[j] - F[k]) / 2 * (sum[j]-sum[k]) < sum[i]  
+类似于一个斜率的式子，所以得到结果点对(i,j)满足上式则 i 更优于 j  
+且sum[i]是前缀和单调递增所以两点只要满足则之后也一定满足  
+到一个点时找到当前最优的点更新结果即可  
+如果先后三个点k，j，i，且(i,j)的式子结果小于(j,k)，那么j点必不可能是最优点，舍弃  
+用单调队列维护一个下凸的点集  
