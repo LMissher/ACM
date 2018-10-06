@@ -10,3 +10,11 @@ http://codeforces.com/contest/1051/problem/F
 http://newoj.acmclub.cn/contests/1389/problem/9
 
 和上一题同理。
+
+# wannafly_day3_I
+https://www.nowcoder.com/acm/contest/203/I
+
+多源最短路。  
+在一幅无向图中给出点集，问点集中的每个点到其他点的最短距离是多少。  
+把点集里的点都做为源点，每个点都再增加一个祖先属性，表示这个点被哪个源点的最短路所更新。  
+然后跑一次多源最短路即可。  
