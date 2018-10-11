@@ -1,116 +1,159 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
+#pragma GCC optimize("Ofast,unroll-loops,no-stack-protector,unsafe-math-optimizations")
+#pragma GCC target("avx")
+#define fi first
+#define se second
+#ifdef CX_TEST
+#define Debug printf
+#else
+#define Debug(...)
+#endif
 using namespace std;
-typedef long long ll;
-const int M = 1e5+7;
-const ll inf = 1e18;
-int n,m,q;
-int sz,tmp,cnt,cnt1,head[M],pre[M],head1[M];
-ll treedis[M];
-struct edge
-{
-	int v,nex;ll w;
-}e[M<<1],e1[M<<4];
-void init(){
-	tmp=cnt1=cnt=0;memset(head,-1,sizeof(head));memset(head1,-1,sizeof(head1));
-	memset(treedis,0,sizeof(treedis));
-	for(int i=1;i<=n;i++) pre[i]=i;
-}
-void add(int u,int v,ll w){
-	e[++cnt].v=v;e[cnt].w=w;e[cnt].nex=head[u];
-	head[u]=cnt;
-}
-void add1(int u,int v,ll w){
-	e1[++cnt1].v=v;e1[cnt1].w=w;e1[cnt1].nex=head1[u];
-	head1[u]=cnt1;
-}
-int find(int x){return x==pre[x]?x:pre[x]=find(pre[x]);}
-int f[M][22],deep[M];
-void dfs(int u,int fa,int d,ll len){//dfs(1,-1,0)
-	treedis[u]=len;
-    deep[u]=d;
-    for(int i=head[u];~i;i=e[i].nex){
-        int v=e[i].v;ll w=e[i].w;
-        if(v==fa) continue;
-        dfs(v,u,d+1,len+w);
-        f[v][0]=u;
+typedef long long LL;
+typedef pair<int, int> P;
+  
+const int mod = 998244353;
+const int maxn = 1e5 + 5;
+  
+const int BUFFER_MAX_SIZE = 100000;
+struct Quick_In {
+    char buf[BUFFER_MAX_SIZE], *ps = buf, *pe = buf + 1;
+    inline void InNext() {
+        if (++ps == pe)
+            pe = (ps = buf) + fread(buf, sizeof(char), sizeof(buf) / sizeof(char), stdin);
     }
-    return ;
+    template<class T>
+    inline bool operator()(T &number) {
+        number = 0;
+        T f = 1;
+        bool vis_point = 0;
+        if (ps == pe) return false; //EOF
+        do {
+            InNext();
+            if ('-' == *ps) f = -1;
+        } while (ps != pe && !isdigit(*ps));
+        if (ps == pe) return false; //EOF
+        do {
+            if((*ps) == '.') vis_point = 1;
+            else {
+                number = number * 10 + *ps - 48;
+                if(vis_point) f *= 0.1;
+            }
+            InNext();
+        } while (ps != pe && (isdigit(*ps) || (*ps) == '.'));
+        number *= f;
+        return true;
+    }
+} In;
+struct Quick_Out {
+    char buf[BUFFER_MAX_SIZE], *ps = buf, *pe = buf + BUFFER_MAX_SIZE;
+    char tmp[100];
+    inline void write() {
+        fwrite(buf, sizeof(char), ps - buf, stdout);
+        ps = buf;
+    }
+    inline void oc(char c) {
+        *(ps++) = c;
+        if (ps == pe) write();
+    }
+    inline void os(char *s) {
+        for (int i = 0; s[i]; ++i) oc(s[i]);
+    }
+    template<class T>
+    inline void oi(T x, char bc = '\n') {
+        if (x < 0) oc('-'), x = -x;
+        int len = 0;
+        if (!x) tmp[len++] = '0';
+        while (x) tmp[len++] = x % 10 + '0', x /= 10;
+        while (len)  oc(tmp[--len]);
+        oc(bc);
+    }
+    ~Quick_Out() {
+        write();
+    }
+} Out;
+  
+vector<int> g[maxn], p;
+int d[maxn], st[maxn][18];
+int f[105][maxn], vis[maxn], Tt = 1;
+bool cv[maxn];
+  
+void dfs(int u, int fa) {
+    vis[u] = Tt;
+    for(auto v : g[u]) {
+        if(v == fa) continue;
+        if(vis[v] == Tt) {
+            if(cv[u] || cv[v]) continue;
+            p.push_back(u);
+            cv[u] = 1;
+            continue;
+        }
+        d[v] = d[u] + 1;
+        st[v][0] = u;
+        for(int i = 1; i < 18; i++) st[v][i] = st[st[v][i - 1]][i - 1];
+        dfs(v, u);
+    }
 }
-void work(){//RMQ
-    for(int i=1;i<20;i++)
-        for(int j=1;j<=n;j++) f[j][i]=f[f[j][i-1]][i-1];
+  
+int lca(int u, int v) {
+    if(d[u] > d[v]) swap(u, v);
+    int x = d[v] - d[u];
+    for(int i = 0; i < 18; i++) {
+        if((x >> i) & 1) v = st[v][i];
+    }
+    if(u != v) {
+        for(int i = 17; i >= 0; i--) {
+            if(st[u][i] != st[v][i]) {
+                u = st[u][i];
+                v = st[v][i];
+            }
+        }
+        u = st[u][0];
+    }
+    return u;
 }
-int lca(int x,int y){//lca
-    if(deep[x]<deep[y]) swap(x,y);
-    int dt=deep[x]-deep[y];
-    for(int i=0;i<20;i++) if(dt&(1<<i)) x=f[x][i];
-    if(x==y) return x;
-    for(int i=19;i>=0;i--) if(f[x][i]!=f[y][i]) x=f[x][i],y=f[y][i];
-    return f[x][0];
+  
+int q[maxn];
+void bfs(int k, int u) {
+    int h, t;
+    h = t = 0;
+    q[t++] = u;
+    vis[u] = ++Tt;
+    while(h < t) {
+        u = q[h++];
+        for(auto v : g[u]) {
+            if(vis[v] == Tt) continue;
+            f[k][v] = f[k][u] + 1;
+            vis[v] = Tt;
+            q[t++] = v;
+        }
+    }
 }
-struct node
-{
-	int id;ll dis;
-	bool operator < (const node & k)const {
-		return dis>k.dis;
-	}
-}d[300][M];
-int flag[M];
-void dijkstra(int s,int index){
-	for(int i=1;i<=n;i++) flag[i]=0,d[index][i].id=i,d[index][i].dis=inf;
-	priority_queue<node> q;d[index][s].dis=0ll;q.push(d[index][s]);
-	while(!q.empty()){
-		int u=q.top().id;
-		q.pop();
-		if(flag[u]) continue;
-		flag[u]=1;
-		for(int i=head1[u];~i;i=e1[i].nex){
-			int v=e1[i].v;ll w=e1[i].w;
-			if(d[index][v].dis>d[index][u].dis+w){
-				d[index][v].dis=d[index][u].dis+w;
-				q.push(d[index][v]);
-			}
-		}
-	}
-
-	return ;
-}
-ll getdis(int u,int v){
-	return treedis[u]+treedis[v]-2ll*treedis[lca(u,v)];
-}
-void solve(){
-	int u,v;
-	scanf("%d%d",&u,&v);
-	ll dis=getdis(u,v);
-	for(int i=1;i<=sz;i++){
-		dis=min(dis,d[i][u].dis+d[i][v].dis);
-	}
-	printf("%lld\n",dis);
-}
-int mn[300];
-int main(){
-	scanf("%d%d",&n,&m);
-	init();
-	for(int i=1;i<=m;i++){
-		int u,v;
-		scanf("%d%d",&u,&v);
-		if(find(u)!=find(v)){
-			add(u,v,1ll);add(v,u,1ll);
-			pre[find(u)]=find(v);
-		}
-		else if(find(u)==find(v)){
-			mn[++tmp]=u;mn[++tmp]=v;
-		}
-		add1(u,v,1ll);add1(v,u,1ll);
-	}
-	dfs(1,-1,0,0ll);
-	work();
-	sort(mn+1,mn+1+tmp);
-	sz=unique(mn+1,mn+1+tmp)-mn-1;
-	for(int i=1;i<=sz;i++) dijkstra(mn[i],i);
-	scanf("%d",&q);
-	while(q--){
-		solve();
-	}
-	return 0;
+  
+int main() {
+#ifdef CX_TEST
+    freopen("E:\\program--GG\\test_in.txt", "r", stdin);
+    freopen("01.txt", "w", stdout);
+#endif
+    int n, m, Q, i, j, u, v;
+    In(n), In(m);
+    for(i = 0; i < m; i++) {
+        In(u), In(v);
+        g[u].push_back(v);
+        g[v].push_back(u);
+    }
+    dfs(1, 0);
+    // sort(p.begin(), p.end());
+    // p.erase(unique(p.begin(), p.end()), p.end());
+    m = p.size();
+    for(i = 0; i < m; i++) bfs(i, p[i]);
+    In(Q);
+    while(Q--) {
+        In(u), In(v);
+        j = d[u] + d[v] - 2 * d[lca(u, v)];
+        for(i = 0; i < m; i++) j = min(j, f[i][u] + f[i][v]);
+        Out.oi(j);
+    }
+    Debug("Time: %.3lfs\n", (double)clock() / CLOCKS_PER_SEC);
+    return 0;
 }

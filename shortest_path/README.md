@@ -9,7 +9,7 @@ http://codeforces.com/contest/1051/problem/F
 # wannafly_day1_J
 http://newoj.acmclub.cn/contests/1389/problem/9
 
-和上一题同理。
+改成了边比点多100条，不过所有边的距离都是1，把非树边抽出来跑一下bfs求互相的最短距离。和cf1051F差不多。
 
 # wannafly_day3_I
 https://www.nowcoder.com/acm/contest/203/I
