@@ -1,9 +1,9 @@
 # wannafly_day1_I.cpp
 http://newoj.acmclub.cn/contests/1389/problem/8
 
-给一棵树，给出m次染色，问每个点的第k次染色是什么颜色。
-倒着做，用线段树维护区间染色的最大次数，如果有k-1次的区间存在，就找到那个点把它的颜色更新，并把它的染色次数变为-inf。
-复杂度O(nlog(n)^2)，注意下update的写法。
+给一棵树，给出m次染色，问每个点的第k次染色是什么颜色。  
+倒着做，用线段树维护区间染色的最大次数，如果有k-1次的区间存在，就找到那个点把它的颜色更新，并把它的染色次数变为-inf。  
+复杂度O(nlog(n)^2)，注意下update的写法。  
 
 # hdu 5242 Game
 http://acm.hdu.edu.cn/showproblem.php?pid=5242
