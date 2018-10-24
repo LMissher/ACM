@@ -19,3 +19,12 @@ n 个一次函数 fi(x) = ki * x + bi,有两个操作。
 根据推算得出对于一个区间的两个子区间 l 与 r ,krt = kl * kr, brt = kr * bl + br 。  
 用线段树维护 k 与 b ,询问的时候合并区间即可。  
 ​​
+# Nowcoder_practice28_B 数据结构
+https://www.nowcoder.com/acm/contest/200/B
+
+$n$ 个数 $m$ 个操作。  
+$1.$ 给出 $l$ 与 $r$ 求 $\sum_{l}^{r}a_{i}$。  
+$2.$ 给出 $l$ 与 $r$ 求 $\sum_{l}^{r}a_{i}^{2}$。  
+$3.$ 给出 $l 、r、x$ 对于区间 $l、r$ 中的所有数 $\times x$。  
+$4.$ 给出 $l 、r、x$ 对于区间 $l、r$ 中的所有数 $+ x$。  
+线段树模板题，维护一个加 $lazy$ 与一个乘 $lazy$ ,再维护两个答案即可。
