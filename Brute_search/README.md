@@ -14,8 +14,16 @@ https://vjudge.net/contest/259596#problem/J
 把缩完点后的图直接爆搜有多少环就可以。  
 具体就是把每一条边从图里删去，然后看从这条边的u到v有多少条到达的路径，总的所有路径数就是答案。  
 
-# 2017Tsukuba_K
+# codeforces1063B Labyrinth
 http://codeforces.com/problemset/problem/1063/B
 
 一幅网格图里有许多路障，限制你只能向左走多少步与向右走多少步，上下不限，问所有可能到达的格子总数是多少。  
 BFS即可。注意搜到一个点时要更新它的状态为最大值即可。  
+
+# codeforces1070A Find a Number
+http://codeforces.com/problemset/problem/1070/A
+
+给两个数$d、s$,问能不能找到一个数能整除$d$且其数位和为$s$。  
+因为$d$的范围是$0$到$500$,$s$的范围是$0$到$5000$,可以考虑爆搜。  
+如果两个数字对$d$的余数相同且其数位和相同可以看作同一个$bfs$状态。  
+那么总的状态只有$500\times5000$，直接搜索即可。
