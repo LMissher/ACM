@@ -11,6 +11,7 @@ https://hihocoder.com/problemset/problem/1629
 撤销使用可撤销并查集，分块用莫队即可。  
 
 # codeforces 891C
+http://codeforces.com/problemset/problem/891/C
 
 给一幅图，再给 $q$ 个询问，每个询问给出一个边集，询问有哪些边集可以在同一个最小生成树里。  
 如果只有一个边集，那么如果将这个边集做一次最小生成树能成功那么就满足条件。  
