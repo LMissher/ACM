@@ -13,11 +13,11 @@ n个人有漂亮值、财富值以及钱财三个属性。
 # LYOI2016_41 一次函数 
 https://lyoi.ac/problem/41
 
-n 个一次函数 fi(x) = ki * x + bi,有两个操作。  
-第一个操作把指定一个二次函数的 k 和 b 改变。  
-第二个操作给出区间 [l,r] 以及 x , 求 fr(fr-1(...fl(x))) 的值。  
-根据推算得出对于一个区间的两个子区间 l 与 r ,krt = kl * kr, brt = kr * bl + br 。  
-用线段树维护 k 与 b ,询问的时候合并区间即可。  
+$n$ 个一次函数 $f_i(x) = k_i \times x + b_i$,有两个操作。  
+第一个操作把指定一个二次函数的 $k$ 和 $b$ 改变。  
+第二个操作给出区间 $[l,r]$ 以及 $x$ , 求 $f_r(f_{r-1}(...f_l(x)))$ 的值。  
+根据推算得出对于一个区间的两个子区间 $l$ 与 $r$ ,$k_{rt} = k_l \times k_r$, $b_{rt} = k_r \times b_l + b_r$ 。  
+用线段树维护 $k$ 与 $b$ ,询问的时候合并区间即可。  
 ​​
 # Nowcoder_practice28_B 数据结构
 https://www.nowcoder.com/acm/contest/200/B
